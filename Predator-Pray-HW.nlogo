@@ -1,17 +1,57 @@
+breed [ sharks shark ]
+breed [ fishes fish ]
+
+turtles-own [ energy ] ; both shark and fish have energy
+
+patches-own [ countdown ] ; patches have a countdown to regrow kelp
+
 to setup
   clear-all
+  ask patches
+  [
+    set pcolor blue
+    if random 100 < density [
+      set pcolor green ; kelp
+      if pcolor = brown [
+        set countdown 15 ; regrow time of kelp
+      ]
+    ]
+  ]
+
+  create-fishes initial-number-fishes ; create the fishes, then initialize variables
+  [
+    set shape "fish"
+    set color orange
+    set size 1
+    set energy 10 + random 16
+    setxy random-xcor random-ycor
+  ]
+
+  create-sharks initial-number-sharks ; create the sharks, then initialize variables
+  [
+    set shape "shark"
+    set color grey
+    set size 3.5
+    set energy 10 + random 16
+    setxy random-xcor random-ycor
+  ]
 
   reset-ticks
 end
+
+to go
+  if not any? turtles [ stop ]
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
-442
-43
-879
-481
+704
+6
+1282
+585
 -1
 -1
-13.0
+33.03030303030303
 1
 10
 1
@@ -30,6 +70,85 @@ GRAPHICS-WINDOW
 1
 ticks
 30.0
+
+SLIDER
+156
+218
+328
+251
+density
+density
+0
+100
+40.0
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+259
+122
+324
+156
+Setup
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+155
+170
+328
+204
+initial-number-sharks
+initial-number-sharks
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+347
+170
+520
+204
+initial-number-fishes
+initial-number-fishes
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+BUTTON
+347
+122
+411
+156
+Go
+go
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -259,6 +378,19 @@ Polygon -7500403 true true 165 180 165 210 225 180 255 120 210 135
 Polygon -7500403 true true 135 105 90 60 45 45 75 105 135 135
 Polygon -7500403 true true 165 105 165 135 225 105 255 45 210 60
 Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
+
+shark
+false
+0
+Polygon -7500403 true true 283 153 288 149 271 146 301 145 300 138 247 119 190 107 104 117 54 133 39 134 10 99 9 112 19 142 9 175 10 185 40 158 69 154 64 164 80 161 86 156 132 160 209 164
+Polygon -7500403 true true 199 161 152 166 137 164 169 154
+Polygon -7500403 true true 188 108 172 83 160 74 156 76 159 97 153 112
+Circle -16777216 true false 256 129 12
+Line -16777216 false 222 134 222 150
+Line -16777216 false 217 134 217 150
+Line -16777216 false 212 134 212 150
+Polygon -7500403 true true 78 125 62 118 63 130
+Polygon -7500403 true true 121 157 105 161 101 156 106 152
 
 sheep
 false
