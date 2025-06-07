@@ -1,3 +1,5 @@
+globals [ fixed-regrowth-time fish-reproduction-chance shark-reproduction-chance fish-energy-gained shark-energy-gained ]
+
 breed [ sharks shark ]
 breed [ fishes fish ]
 
@@ -7,14 +9,21 @@ patches-own [ countdown ] ; patches have a countdown to regrow kelp
 
 to setup
   clear-all
+
+  set fixed-regrowth-time 50 ; kelp regrowth time set to 50
+  set fish-reproduction-chance 4 ; fish reproduction chance 4%
+  set shark-reproduction-chance 5 ; shark reproduction chance 5%
+  set fish-energy-gained 2 ; fish replenishes 2 energy from eating kelp
+  set shark-energy-gained 10; shark replenishes 10 energy from eating fish
+
   ask patches
   [
-    set pcolor blue
-    if random 100 < density [
-      set pcolor green ; kelp
-      if pcolor = brown [
-        set countdown 15 ; regrow time of kelp
-      ]
+    ifelse random 100 < density [ ; create kelp based on density
+      set pcolor green
+      set countdown fixed-regrowth-time ; fixed kelp regrow time
+    ] [
+      set pcolor blue
+      set countdown random fixed-regrowth-time
     ]
   ]
 
@@ -23,7 +32,7 @@ to setup
     set shape "fish"
     set color orange
     set size 1
-    set energy 10 + random 16
+    set energy 10 + random 16 ; starting energy for fishes (10-15)
     setxy random-xcor random-ycor
   ]
 
@@ -32,28 +41,108 @@ to setup
     set shape "shark"
     set color grey
     set size 3.5
-    set energy 10 + random 16
+    set energy 10 + random 21 ; starting energy for sharks (10-20)
     setxy random-xcor random-ycor
   ]
-
   reset-ticks
 end
 
 to go
-  if not any? turtles [ stop ]
+  if not any? turtles [ stop ] ; stop the model if there are no turtles left
+  update-turtles
+  ask patches [ grow-kelp ]
+  tick
+  display-labels
 end
 
+to move ; turtle movement
+  rt random 50
+  lt random 50
+  fd 1
+end
+
+to eat-kelp
+  ; once kelp is eaten, turn the patch to blue
+  if pcolor = green [
+    set pcolor blue
+    set energy energy + fish-energy-gained ; fish replenishes energy from eating kelp
+  ]
+end
+
+to reproduce-fishes
+  if random-float 100 < fish-reproduction-chance [
+    set energy (energy / 2) ; divide energy between the parent and child
+    hatch 1 [ rt random-float 360 fd 1 ]
+  ]
+end
+
+to reproduce-sharks
+  if random-float 100 < shark-reproduction-chance [
+    set energy (energy / 2) ; divide between the parent and child
+    hatch 1 [rt random-float 360 fd 1 ]
+  ]
+end
+
+to eat-fish
+  let prey one-of fishes-here
+  if prey != nobody [
+    ask prey [ die ]
+    set energy energy + shark-energy-gained ; shark replenishes energy from eating fish
+  ]
+end
+
+to update-turtles
+  ask turtles [
+    move
+    set energy energy - 1 ; every move -1 energy
+    ifelse breed = fishes [
+      eat-kelp
+      reproduce-fishes
+    ] [
+      eat-fish
+      reproduce-sharks
+    ]
+    death
+  ]
+end
+
+to death
+  ; for both fish and shark
+  if energy < 0 [ die ] ; when energy = 0 turtle will die
+end
+
+to grow-kelp
+  if pcolor = blue [
+    ifelse countdown <= 0 [ ; when counter reaches 0, grow kelp
+      set pcolor green
+      set countdown fixed-regrowth-time
+    ] [
+      set countdown countdown - 1 ; else -1 from countdown
+    ]
+  ]
+end
+
+to-report kelp
+  report patches with [pcolor = green]
+end
+
+to display-labels
+  ask turtles [ set label "" ]
+  if show-energy? [
+    ask turtles [ set label round energy ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
-704
-6
-1282
-585
+543
+64
+1257
+779
 -1
 -1
-33.03030303030303
+13.85
 1
-10
+14
 1
 1
 1
@@ -61,12 +150,12 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
-0
-0
+-25
+25
+-25
+25
+1
+1
 1
 ticks
 30.0
@@ -104,9 +193,9 @@ NIL
 1
 
 SLIDER
-155
-170
-328
+346
+171
+519
 204
 initial-number-sharks
 initial-number-sharks
@@ -119,9 +208,9 @@ NIL
 HORIZONTAL
 
 SLIDER
-347
-170
-520
+156
+171
+329
 204
 initial-number-fishes
 initial-number-fishes
@@ -140,7 +229,7 @@ BUTTON
 156
 Go
 go
-NIL
+T
 1
 T
 OBSERVER
@@ -149,6 +238,69 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+292
+300
+349
+345
+Kelp
+count kelp
+17
+1
+11
+
+MONITOR
+216
+299
+273
+344
+Fish
+count fishes
+17
+1
+11
+
+MONITOR
+374
+301
+431
+346
+Sharks
+count sharks
+17
+1
+11
+
+SWITCH
+265
+363
+399
+396
+show-energy?
+show-energy?
+0
+1
+-1000
+
+PLOT
+164
+415
+475
+565
+Prey-Predator Populations
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -955883 true "" "plot count fishes"
+"pen-1" 1.0 0 -9276814 true "" "plot count sharks"
 
 @#$#@#$#@
 ## WHAT IS IT?
