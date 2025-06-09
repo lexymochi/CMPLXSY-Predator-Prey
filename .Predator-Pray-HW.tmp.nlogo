@@ -41,7 +41,7 @@ to setup
     set shape "shark"
     set color grey
     set size 3.5
-    set energy 10 + random 21 ; starting energy for sharks (10-20)
+    set energy 0 + random 21 ; starting energy for sharks (10-20)
     setxy random-xcor random-ycor
   ]
   reset-ticks
@@ -200,7 +200,7 @@ initial-number-sharks
 initial-number-sharks
 0
 100
-100.0
+50.0
 1
 1
 NIL
@@ -215,7 +215,7 @@ initial-number-fishes
 initial-number-fishes
 0
 100
-50.0
+100.0
 1
 1
 NIL
