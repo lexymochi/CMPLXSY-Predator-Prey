@@ -10,11 +10,11 @@ patches-own [ countdown ] ; patches have a countdown to regrow kelp
 to setup
   clear-all
 
-  set fixed-regrowth-time 40 ; kelp regrowth time set to 50
-  set fish-reproduction-chance 30 ; fish reproduction chance 4%
+  set fixed-regrowth-time 30 ; kelp regrowth time set to 30
+  set fish-reproduction-chance 4 ; fish reproduction chance 4%
   set shark-reproduction-chance 5 ; shark reproduction chance 5%
-  set fish-energy-gained 5 ; fish replenishes 2 energy from eating kelp
-  set shark-energy-gained 6; shark replenishes 10 energy from eating fish
+  set fish-energy-gained 4 ; fish replenishes 4 energy from eating kelp
+  set shark-energy-gained 20; shark replenishes 20 energy from eating fish
 
   ask patches
   [
@@ -49,6 +49,9 @@ end
 
 to go
   if not any? turtles [ stop ] ; stop the model if there are no turtles left
+  if stop-after-500-ticks? [ ; stop after 500 ticks switch
+    if ticks >= 500 [stop ]
+  ]
   update-turtles
   ask patches [ grow-kelp ]
   tick
@@ -64,6 +67,7 @@ to eat-kelp
   ; once kelp is eaten, turn the patch to blue
   if pcolor = green [
     set pcolor blue
+    set countdown fixed-regrowth-time ; start regrowth countdown only when help is eaten
     set energy energy + fish-energy-gained ; fish replenishes energy from eating kelp
   ]
 end
@@ -83,7 +87,7 @@ to reproduce-sharks
 end
 
 to eat-fish
-  let prey one-of fishes in-radius 0.8
+  let prey one-of fishes in-radius 0.5
   if prey != nobody [
     ask prey [ die ]
     set energy energy + shark-energy-gained ; shark replenishes energy from eating fish
@@ -133,10 +137,10 @@ to display-labels
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-543
-64
-1257
-779
+556
+13
+1270
+728
 -1
 -1
 13.85
@@ -160,25 +164,25 @@ ticks
 30.0
 
 SLIDER
-156
-218
-328
-251
+78
+203
+250
+236
 density
 density
 0
 100
-40.0
+30.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-259
-122
-324
-156
+181
+108
+246
+142
 Setup
 setup
 NIL
@@ -192,14 +196,14 @@ NIL
 1
 
 SLIDER
-346
-171
-519
-204
+268
+156
+441
+189
 initial-number-sharks
 initial-number-sharks
 0
-100
+200
 100.0
 1
 1
@@ -207,25 +211,25 @@ NIL
 HORIZONTAL
 
 SLIDER
+78
 156
-171
-329
-204
+251
+189
 initial-number-fishes
 initial-number-fishes
 0
-100
-100.0
+200
+50.0
 1
 1
 NIL
 HORIZONTAL
 
 BUTTON
-347
-122
-411
-156
+269
+108
+333
+142
 Go
 go
 T
@@ -239,10 +243,10 @@ NIL
 1
 
 MONITOR
-292
-300
-349
-345
+229
+310
+286
+355
 Kelp
 count kelp
 17
@@ -250,10 +254,10 @@ count kelp
 11
 
 MONITOR
-216
-299
-273
-344
+172
+310
+229
+355
 Fish
 count fishes
 17
@@ -261,10 +265,10 @@ count fishes
 11
 
 MONITOR
-374
-301
-431
-346
+285
+310
+342
+355
 Sharks
 count sharks
 17
@@ -272,10 +276,10 @@ count sharks
 11
 
 SWITCH
-265
-363
-399
-396
+186
+256
+320
+289
 show-energy?
 show-energy?
 1
@@ -283,10 +287,10 @@ show-energy?
 -1000
 
 PLOT
-164
-415
-475
-565
+100
+368
+411
+518
 Prey-Predator Populations
 NIL
 NIL
@@ -300,6 +304,17 @@ false
 PENS
 "default" 1.0 0 -955883 true "" "plot count fishes"
 "pen-1" 1.0 0 -9276814 true "" "plot count sharks"
+
+SWITCH
+269
+204
+441
+237
+stop-after-500-ticks?
+stop-after-500-ticks?
+1
+1
+-1000
 
 @#$#@#$#@
 ## WHAT IS IT?
