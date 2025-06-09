@@ -10,11 +10,11 @@ patches-own [ countdown ] ; patches have a countdown to regrow kelp
 to setup
   clear-all
 
-  set fixed-regrowth-time 50 ; kelp regrowth time set to 50
-  set fish-reproduction-chance 4 ; fish reproduction chance 4%
+  set fixed-regrowth-time 40 ; kelp regrowth time set to 50
+  set fish-reproduction-chance 30 ; fish reproduction chance 4%
   set shark-reproduction-chance 5 ; shark reproduction chance 5%
-  set fish-energy-gained 2 ; fish replenishes 2 energy from eating kelp
-  set shark-energy-gained 15; shark replenishes 10 energy from eating fish
+  set fish-energy-gained 5 ; fish replenishes 2 energy from eating kelp
+  set shark-energy-gained 6; shark replenishes 10 energy from eating fish
 
   ask patches
   [
@@ -83,7 +83,7 @@ to reproduce-sharks
 end
 
 to eat-fish
-  let prey one-of fishes in-radius 2
+  let prey one-of fishes in-radius 0.8
   if prey != nobody [
     ask prey [ die ]
     set energy energy + shark-energy-gained ; shark replenishes energy from eating fish
@@ -215,7 +215,7 @@ initial-number-fishes
 initial-number-fishes
 0
 100
-50.0
+100.0
 1
 1
 NIL
@@ -278,7 +278,7 @@ SWITCH
 396
 show-energy?
 show-energy?
-0
+1
 1
 -1000
 
