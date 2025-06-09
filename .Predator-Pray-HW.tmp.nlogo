@@ -48,15 +48,26 @@ to setup
 end
 
 to go
-  if not any? turtles [ stop ] ; stop the model if there are no turtles left
-  if stop-after-500-ticks? [ ; stop after 500 ticks switch
-    if ticks >= 500 [stop ]
+  if not any? turtles [ stop ] ; stop if no turtles
+
+  ;; Stop if either fishes, sharks, or kelp are gone
+  if stop-after-an-extinction? [
+    if not any? fishes or not any? sharks or count patches with [pcolor = green] = 0 [
+      stop
   ]
+
+  ]
+
+  if stop-after-500-ticks? [ ; stop after 500 ticks switch
+    if ticks >= 500 [ stop ]
+  ]
+
   update-turtles
   ask patches [ grow-kelp ]
   tick
   display-labels
 end
+
 
 to move ; turtle movement
   rt random 30 - 15 ;
@@ -139,8 +150,8 @@ end
 GRAPHICS-WINDOW
 556
 13
-1270
-728
+1268
+726
 -1
 -1
 13.85
@@ -276,10 +287,10 @@ count sharks
 11
 
 SWITCH
-186
-256
-320
-289
+80
+254
+214
+287
 show-energy?
 show-energy?
 1
@@ -312,7 +323,18 @@ SWITCH
 237
 stop-after-500-ticks?
 stop-after-500-ticks?
-0
+1
+1
+-1000
+
+SWITCH
+389
+298
+584
+331
+stop-after-an-extinction?
+stop-after-an-extinction?
+1
 1
 -1000
 
