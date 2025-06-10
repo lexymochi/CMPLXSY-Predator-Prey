@@ -372,6 +372,7 @@ A finite resource in the environment. Kelps regrow when eaten at a fixed rate. C
 	initial-number-fishes - The initial size of fish population
 	stop-after-500-ticks? - Whether the model will stop after 500 ticks or not
 	show-energy? - Whether the energy of the sharks and fishes would be shown or not
+	stop-after-an-extinction? - Whether the model will stop after a turtle or food reaches 0
 
 ## THINGS TO NOTICE
 

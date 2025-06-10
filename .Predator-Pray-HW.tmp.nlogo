@@ -11,10 +11,10 @@ to setup
   clear-all
 
   set fixed-regrowth-time 30 ; kelp regrowth time set to 30
-  set fish-reproduction-chance 10 ; fish reproduction chance %
+  set fish-reproduction-chance 10 ; fish reproduction chance 10%
   set shark-reproduction-chance 5 ; shark reproduction chance 5%
-  set fish-energy-gained 10 ; fish replenishes 4 energy from eating kelp
-  set shark-energy-gained 6; shark replenishes 20 energy from eating fish
+  set fish-energy-gained 10 ; fish replenishes 10 energy from eating kelp
+  set shark-energy-gained 6; shark replenishes 6 energy from eating fish
 
   ask patches
   [
@@ -113,7 +113,7 @@ to update-turtles
       eat-kelp
       reproduce-fishes
     ] [
-      set energy energy - 1.5
+      set energy energy - 1.5 ; sharks use up more energy when walking compared to fish
       eat-fish
       reproduce-sharks
     ]
@@ -372,6 +372,7 @@ A finite resource in the environment. Kelps regrow when eaten at a fixed rate. C
 	initial-number-fishes - The initial size of fish population
 	stop-after-500-ticks? - Whether the model will stop after 500 ticks or not
 	show-energy? - Whether the energy of the sharks and fishes would be shown or not
+	
 
 ## THINGS TO NOTICE
 
