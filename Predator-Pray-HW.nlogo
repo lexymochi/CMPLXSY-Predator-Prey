@@ -11,10 +11,10 @@ to setup
   clear-all
 
   set fixed-regrowth-time 30 ; kelp regrowth time set to 30
-  set fish-reproduction-chance 4 ; fish reproduction chance 4%
+  set fish-reproduction-chance 10 ; fish reproduction chance 4%
   set shark-reproduction-chance 5 ; shark reproduction chance 5%
-  set fish-energy-gained 4 ; fish replenishes 4 energy from eating kelp
-  set shark-energy-gained 20; shark replenishes 20 energy from eating fish
+  set fish-energy-gained 8 ; fish replenishes 4 energy from eating kelp
+  set shark-energy-gained 4; shark replenishes 20 energy from eating fish
 
   ask patches
   [
@@ -150,8 +150,8 @@ end
 GRAPHICS-WINDOW
 556
 13
-1268
-726
+1270
+728
 -1
 -1
 13.85

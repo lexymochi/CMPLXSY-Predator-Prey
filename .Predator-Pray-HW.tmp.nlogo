@@ -11,10 +11,10 @@ to setup
   clear-all
 
   set fixed-regrowth-time 30 ; kelp regrowth time set to 30
-  set fish-reproduction-chance 4 ; fish reproduction chance 4%
+  set fish-reproduction-chance 10 ; fish reproduction chance %
   set shark-reproduction-chance 5 ; shark reproduction chance 5%
-  set fish-energy-gained 4 ; fish replenishes 4 energy from eating kelp
-  set shark-energy-gained 20; shark replenishes 20 energy from eating fish
+  set fish-energy-gained 10 ; fish replenishes 4 energy from eating kelp
+  set shark-energy-gained 6; shark replenishes 20 energy from eating fish
 
   ask patches
   [
@@ -40,7 +40,7 @@ to setup
   [
     set shape "shark"
     set color grey
-    set size 3.5
+    set size 3
     set energy 10 + random 21 ; starting energy for sharks (10-20)
     setxy random-xcor random-ycor
   ]
@@ -98,7 +98,7 @@ to reproduce-sharks
 end
 
 to eat-fish
-  let prey one-of fishes in-radius 0.5
+  let prey one-of fishes in-radius 1
   if prey != nobody [
     ask prey [ die ]
     set energy energy + shark-energy-gained ; shark replenishes energy from eating fish
@@ -108,11 +108,12 @@ end
 to update-turtles
   ask turtles [
     move
-    set energy energy - 1 ; every move -1 energy
     ifelse breed = fishes [
+      set energy energy - 1
       eat-kelp
       reproduce-fishes
     ] [
+      set energy energy - 1.5
       eat-fish
       reproduce-sharks
     ]
@@ -150,8 +151,8 @@ end
 GRAPHICS-WINDOW
 556
 13
-1268
-726
+1270
+728
 -1
 -1
 13.85
@@ -287,10 +288,10 @@ count sharks
 11
 
 SWITCH
-80
-254
-214
-287
+77
+257
+211
+290
 show-energy?
 show-energy?
 1
@@ -298,10 +299,10 @@ show-energy?
 -1000
 
 PLOT
-100
-368
-411
-518
+63
+364
+483
+630
 Prey-Predator Populations
 NIL
 NIL
@@ -323,15 +324,15 @@ SWITCH
 237
 stop-after-500-ticks?
 stop-after-500-ticks?
-1
+0
 1
 -1000
 
 SWITCH
-389
-298
-584
-331
+248
+254
+443
+287
 stop-after-an-extinction?
 stop-after-an-extinction?
 1
@@ -341,15 +342,36 @@ stop-after-an-extinction?
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This model explores predator-prey ecosystem's stability, particularly in the "fishes-shark" aspect. A system is called unstable if it tends to result in extinction for one or more species involved. In contrast, a system is stable if it tends to maintain itself over time, despite fluctuations in population sizes.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+The environment will simulate an ocean ecosystem, a predator-prey simulation, that focuses on specific animals as predators and prey together with a fixed food agent. The food regrows overtime at a fixed rate and will provide sustenance for the prey while the prey provides sustenance for the predator. The agents will roam the environment/space with a common goal to replenish their energy as it depletes with their movement. The movement of the predator and prey will depend on their hunger/energy and will die out when not eaten in a duration of steps.
+
+### Preys [also a Food] - Fish 
+Preys roam around the space looking for food (Kelps) as sustenance to find. They must eat Kelps as food to keep moving. For each step the prey has done, it depletes energy. For each kelp eaten by the fish, their energy comes back. Fishes also have a fixed probability of reproducing after each step.
+
+### Predators - Shark
+Predators also roam around the space looking for food (Fish) as sustenance to find. They must eat fish as food to keep moving. For each step the predator has done, it depletes energy. For each fish eaten by the shark, their energy comes back. Sharks also have a fixed probability of reproducing after each step.
+
+### Food - Kelps
+A finite resource in the environment. Kelps regrow when eaten at a fixed rate. Can only be eaten by fishes. Provides sustenance for fishes to replenish lost energy.
+
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+1. Adjust the slider and switch parameters if needed.
+2. Press the SETUP button.
+3. Press the GO button to begin the simulation.
+4. Look at the Predator-Prey Population plot to see the current population sizes.
+5. Look at the Fish, Kelp, and Shark monitor to see the number of food eaten over time.
+
+### PARAMETERS:
+	density - The number of patches with kelp
+	initial-number-sharks - The initial size of shark population
+	initial-number-fishes - The initial size of fish population
+	stop-after-500-ticks? - Whether the model will stop after 500 ticks or not
+	show-energy? - Whether the energy of the sharks and fishes would be shown or not
 
 ## THINGS TO NOTICE
 
@@ -369,7 +391,7 @@ stop-after-an-extinction?
 
 ## RELATED MODELS
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+The fishes-sharks prey-predator ecosystem made was based on sheeps-wolves model from the NetLogo Models Library 
 
 ## CREDITS AND REFERENCES
 
