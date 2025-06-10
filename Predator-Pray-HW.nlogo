@@ -11,10 +11,10 @@ to setup
   clear-all
 
   set fixed-regrowth-time 30 ; kelp regrowth time set to 30
-  set fish-reproduction-chance 10 ; fish reproduction chance 4%
+  set fish-reproduction-chance 10 ; fish reproduction chance 10%
   set shark-reproduction-chance 5 ; shark reproduction chance 5%
-  set fish-energy-gained 8 ; fish replenishes 4 energy from eating kelp
-  set shark-energy-gained 4; shark replenishes 20 energy from eating fish
+  set fish-energy-gained 10 ; fish replenishes 10 energy from eating kelp
+  set shark-energy-gained 6; shark replenishes 6 energy from eating fish
 
   ask patches
   [
@@ -40,7 +40,7 @@ to setup
   [
     set shape "shark"
     set color grey
-    set size 3.5
+    set size 3
     set energy 10 + random 21 ; starting energy for sharks (10-20)
     setxy random-xcor random-ycor
   ]
@@ -98,7 +98,7 @@ to reproduce-sharks
 end
 
 to eat-fish
-  let prey one-of fishes in-radius 0.5
+  let prey one-of fishes in-radius 1
   if prey != nobody [
     ask prey [ die ]
     set energy energy + shark-energy-gained ; shark replenishes energy from eating fish
@@ -108,11 +108,12 @@ end
 to update-turtles
   ask turtles [
     move
-    set energy energy - 1 ; every move -1 energy
     ifelse breed = fishes [
+      set energy energy - 1
       eat-kelp
       reproduce-fishes
     ] [
+      set energy energy - 1.5 ; sharks use up more energy when walking compared to fish
       eat-fish
       reproduce-sharks
     ]
@@ -183,7 +184,7 @@ density
 density
 0
 100
-16.0
+30.0
 1
 1
 NIL
@@ -298,10 +299,10 @@ show-energy?
 -1000
 
 PLOT
-100
-368
-411
-518
+63
+364
+483
+630
 Prey-Predator Populations
 NIL
 NIL
@@ -323,7 +324,7 @@ SWITCH
 237
 stop-after-500-ticks?
 stop-after-500-ticks?
-1
+0
 1
 -1000
 
