@@ -372,19 +372,18 @@ A finite resource in the environment. Kelps regrow when eaten at a fixed rate. C
 	initial-number-fishes - The initial size of fish population
 	stop-after-500-ticks? - Whether the model will stop after 500 ticks or not
 	show-energy? - Whether the energy of the sharks and fishes would be shown or not
-	stop-after-an-extinction? - Whether the model will stop after a turtle or food reaches 0
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+Look for the graph of the population of the preys and predators as the ecosystem runs.
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+Try to adjust the amount of preys, predators, and density of the food to see if new patterns emerge. Additionally, you can edit the global variable's values to see how it will affect the population of the preys and predators.
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+Adding variability of the turtles (fishes and sharks) may yield different results. By having a mix of small and big predators and preys, it may yield different results when the ecosystem runs.
 
 ## NETLOGO FEATURES
 
